@@ -24,9 +24,11 @@ class Profile extends React.Component {
     render(){
         return(
             <div>
-                <User/>
+                <User login={this.props.login} date={this.props.date}/>
                 {this.renderRepos()}
             </div>
         )
     }
 }
+
+export default Profile;

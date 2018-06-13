@@ -11,21 +11,16 @@ let getUser = (id) => {
     return fetch(`https://api.github.com/user/${id}`).then(response => {
         return response.json()
     }).then(data => {
-        console.log(data);
-        let user = {
-            login: data.login,
-            date: data.created_at
-        };
-        return user
+        return data
     });
 };
-//muszę dorzucić pobrane repozytoria użytkownika do obiektu user zapisywanego potem do local storage
+
 let getUsersRepos = (login) => {
     return fetch(`https://api.github.com/users/${login}/repos`).then(response => {
         return response.json()
     }).then(data => {
-        console.log(data)
+        return data;
     })
 };
 
-export { searchUser, getUser};
+export { searchUser, getUser, getUsersRepos };
