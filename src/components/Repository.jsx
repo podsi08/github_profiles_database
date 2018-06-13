@@ -3,9 +3,9 @@ import React from 'react';
 class Repository extends React.Component {
     render(){
         return(
-            <div>
-                <span>{this.props.repoName}</span>
-                <span>{this.props.stars}</span>
+            <div className='repositories_repo'>
+                <div>{this.props.repoName}</div>
+                <div>{this.props.stars}</div>
             </div>
         )
     }

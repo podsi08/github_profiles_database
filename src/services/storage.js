@@ -5,4 +5,8 @@ let addUser = (profile) => {
     return localforage.setItem(storageKey, profile);
 };
 
-export default addUser;
+let getUsers = () => {
+    return localforage.getItem(storageKey)
+};
+
+export { addUser, getUsers };

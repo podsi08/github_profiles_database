@@ -1,6 +1,7 @@
 import React from 'react';
 import { searchUser, getUser, getUsersRepos } from '../services/api';
-import addUser from '../services/storage';
+import { addUser } from '../services/storage';
+import { publish } from "../services/pubsub";
 
 
 class UserSearch extends React.Component {
@@ -36,6 +37,7 @@ class UserSearch extends React.Component {
         return getUser(id).then((user) => {
             profile.login = user.login;
             profile.date = user.created_at;
+
             return getUsersRepos(user.login);
         }).then(repos => {
             profile.repos = repos.map(repo => {
@@ -44,21 +46,31 @@ class UserSearch extends React.Component {
                     stars: repo.stargazers_count
                 }
             });
-            console.log(profile);
+
             return profile;
         }).then(profile => {
-            addUser(profile)
+            //do tablicy z profilami przechowywanej w state dodaje użytkownika na którego kliknięto (jeżeli nie został już wcześniej dodany do bazy)
+            let databaseUsernames = this.props.profiles.map(profile => profile.login);
+
+            if(databaseUsernames.indexOf(profile.login) === -1) {
+                let profilesToSave = [profile, ...this.props.profiles];
+                console.log("wywolanie addUser()");
+                addUser(profilesToSave).then(() => {
+                    console.log("wywolanie publish()");
+                    publish('xyz123');
+                });
+            }
         })
     };
 
     render(){
         return(
-            <div>
+            <div className='user_search'>
                 <input type='text' placeholder='user name' onChange={this.handleInput}/>
                 <button onClick={this.formSubmit}>FIND</button>
                 {
                     this.state.users.map((user) => {
-                        return <div key={user.id} onClick={() => this.addUserToDatabase(user.id)}>{user.login}</div>
+                        return <div className='searched_user' key={user.id} onClick={() => this.addUserToDatabase(user.id)}>{user.login}</div>
                     })
                 }
             </div>

@@ -1,5 +1,60 @@
 body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+.container {
+    margin: 20px auto;
+    width: 800px;
+}
+
+.user_search {
+    margin-bottom: 20px;
+}
+
+.user_search input {
+    margin-right: 50px;
+}
+
+.profile {
+    margin-bottom: 10px;
+}
+
+.searched_user {
+    margin-top: 7px;
+    cursor: pointer;
+}
+
+.user > * {
+    display: inline-block;
+}
+
+.user div:first-child {
+    width: 150px;
+}
+
+.user div:nth-child(2) {
+    width: 200px;
+}
+
+.repositories {
+    margin: 10px 0 10px 10px;
+}
+
+.repositories>div:nth-child(2n){
+    color: darkblue;
+}
+
+.repositories>div:nth-child(2n+1){
+    color: gray;
+}
+
+.repositories_repo > div {
+    display: inline-block;
+    margin-bottom: 7px;
+}
+
+.repositories_repo div:first-child {
+    width: 420px;
 }

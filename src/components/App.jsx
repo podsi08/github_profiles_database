@@ -1,9 +1,9 @@
 import React from 'react';
-import UserSearch from './UserSearch';
+import ProfileList from "./ProfileList";
 
 class App extends React.Component {
     render(){
-        return <UserSearch/>
+        return <ProfileList/>
     }
 }
 

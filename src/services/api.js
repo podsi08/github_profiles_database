@@ -2,7 +2,6 @@ let searchUser = (user) => {
     return fetch(`https://api.github.com/search/users?q=${user}`).then(response => {
         return response.json()
     }).then(data => {
-        console.log(data.items);
         return data.items;
     });
 };
