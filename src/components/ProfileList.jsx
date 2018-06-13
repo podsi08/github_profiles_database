@@ -1,4 +1,5 @@
 import React from 'react';
+import PubSub from 'pubsub-js';
 import Profile from './Profile';
 import UserSearch from './UserSearch';
 import { getUsers } from "../services/storage";
@@ -13,16 +14,6 @@ class ProfileList extends React.Component {
         }
     }
 
-    componentDidMount() {
-        //po otrzymaniu odpowiedzi z local storage zmieniam state
-        this.loadUsers();
-
-        subscribe((dataPayload) => {
-            console.log("PRZYSZLY DANE", dataPayload);
-            this.loadUsers();
-        });
-    }
-
     loadUsers = () => {
         console.log("loadUsers()");
         getUsers().then(users => {
@@ -30,7 +21,28 @@ class ProfileList extends React.Component {
                 profiles: users
             })
         })
+    };
+
+    componentDidMount() {
+        //po otrzymaniu odpowiedzi z local storage zmieniam state
+        this.loadUsers();
+
+        //nasłuchuje zdarzeń z wiadomością 'NEW USER'
+        //w komponencie UserSearch po kliknięciu w użytkownika wykona się funkcja addUser, która dodaje użytkownika do bazy
+        //po czym 'publikuje' zdarzenie - publish('NEW USER')
+        //w momencie otrzymania wiadomości o zdarzeniu, wykona się funkcja podana w subscribe jako drugi parametr
+
+        this.token = PubSub.subscribe('NEW USER', this.loadUsers);
+        // subscribe((dataPayload) => {
+        //     console.log("PRZYSZLY DANE", dataPayload);
+        //     this.loadUsers();
+        // });
     }
+
+    componentWillUnmount() {
+        PubSub.unsubscribe(this.token);
+    }
+
 
     render(){
         let profilesToRender = [];
