@@ -3,7 +3,7 @@ import PubSub from 'pubsub-js';
 import Profile from './Profile';
 import UserSearch from './UserSearch';
 import { getUsers, addUser } from "../services/storage";
-import {getUsersRepos} from "../services/api";
+import { getUsersRepos } from "../services/api";
 
 class ProfileList extends React.Component {
     constructor(props){
@@ -25,13 +25,11 @@ class ProfileList extends React.Component {
 
     //funkcja wykona się po kliknięciu w przycisk REFRESH, jako parametr przekazuję obiekt z danymi o użytkowniku
     refreshUserRepo = (user) => {
-        console.log('refresh', user);
-        let profile = {...user};
+        //tworzę nową tablicę w której podmienię użytkownika dla którego mają zostać odświeżone repozytoria
+        let newProfilesArray = [...this.state.profiles];
+        let userIndex = newProfilesArray.indexOf(user);
 
-        //tworzę tablicę użytkowników bez użytkownika dla którego będą pobierane nowe dane o repozytoriach
-        let newProfilesArray = this.state.profiles.filter(profile => {
-            return profile.login !== user.login;
-        });
+        let profile = {...user};
 
         //pobieram dane o repozytoriach
         getUsersRepos(user.login).then(repos => {
@@ -41,13 +39,43 @@ class ProfileList extends React.Component {
                     stars: repo.stargazers_count
                 }
             });
-            //dodaję użytkownika do tablicy, która zostanie zapisana do local storage
-            newProfilesArray.push(profile);
+
+            //podmieniam stary profil użytkownika na profil z nowymi repozytoriami
+            newProfilesArray[userIndex] = profile;
 
             addUser(newProfilesArray).then(() => {
                 PubSub.publish('NEW USER');
             });
         })
+    };
+
+    refreshAll = () => {
+        let newProfilesArray = [];
+
+        let getChangedUserProfile = (user) => {
+            getUsersRepos(user.login).then(repos => {
+                user.repos = repos.map(repo => {
+                    return {
+                        name: repo.name,
+                        stars: repo.stargazers_count
+                    }
+                })
+            });
+            return user
+        };
+
+        //do nowe, pustej tablicy dodaję po kolei użytkowników ze zmienionymi repozytoriami
+        this.state.profiles.forEach(profile => {
+            newProfilesArray.push(getChangedUserProfile(profile))
+        });
+
+        //kiedy repozytoria dla wszystkich użytkownikó będę uaktualnine, zapisuję je do localforage i uaktualniam na stronie
+        Promise.all(newProfilesArray).then(users => {
+            console.log(users);
+            addUser(users);
+        }).then(() => {
+            PubSub.publish('NEW USER');
+        });
     };
 
     componentDidMount() {
@@ -79,7 +107,7 @@ class ProfileList extends React.Component {
             <div className='container'>
                 <UserSearch profiles={this.state.profiles}/>
                 {profilesToRender}
-                <button>REFRESH ALL</button>
+                <button onClick={this.refreshAll}>REFRESH ALL</button>
             </div>
 
         )
