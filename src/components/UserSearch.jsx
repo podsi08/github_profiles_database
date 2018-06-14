@@ -2,8 +2,6 @@ import React from 'react';
 import PubSub from 'pubsub-js';
 import { searchUser, getUser, getUsersRepos } from '../services/api';
 import { addUser } from '../services/storage';
-import { publish } from "../services/pubsub";
-
 
 class UserSearch extends React.Component {
     constructor(props){
@@ -58,8 +56,7 @@ class UserSearch extends React.Component {
                 console.log("wywolanie addUser()");
                 addUser(profilesToSave).then(() => {
                     PubSub.publish('NEW USER');
-                    console.log("wywolanie publish()");
-                    // publish('xyz123');
+                    console.log("publish(NEW USER)");
                 });
             }
         })

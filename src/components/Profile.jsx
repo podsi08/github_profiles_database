@@ -17,16 +17,22 @@ class Profile extends React.Component {
         })
     };
 
+    refreshUserRepoClick = () => {
+        if(typeof this.props.refreshUserRepo === 'function'){
+            this.props.refreshUserRepo(this.props.profile);
+        }
+    };
+
     renderRepos = () => {
         if (this.state.showRepo) {
             return (
                 <div className='repositories'>
                     {
-                        this.props.repos.map(repo => {
+                        this.props.profile.repos.map(repo => {
                             return <Repository key={repo.name} repoName={repo.name} stars={repo.stars}/>
                         })
                     }
-                    <button>REFRESH</button>
+                    <button onClick={this.refreshUserRepoClick}>REFRESH</button>
                 </div>
             )
         } else {
@@ -37,7 +43,7 @@ class Profile extends React.Component {
     render(){
         return(
             <div className='profile'>
-                <User login={this.props.login} date={this.props.date} showRepo={this.showRepos}/>
+                <User login={this.props.profile.login} date={this.props.profile.date} showRepo={this.showRepos}/>
                 {this.renderRepos()}
             </div>
         )
