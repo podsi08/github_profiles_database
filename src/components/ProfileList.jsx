@@ -50,27 +50,28 @@ class ProfileList extends React.Component {
     };
 
     refreshAll = () => {
-        let newProfilesArray = [];
+        let promisesArray = [];
 
         let getChangedUserProfile = (user) => {
-            getUsersRepos(user.login).then(repos => {
+            return getUsersRepos(user.login).then(repos => {
                 user.repos = repos.map(repo => {
                     return {
                         name: repo.name,
                         stars: repo.stargazers_count
                     }
-                })
+                });
+                return user
             });
-            return user
         };
 
-        //do nowe, pustej tablicy dodaję po kolei użytkowników ze zmienionymi repozytoriami
+        //dodaję promisy do tablicy
         this.state.profiles.forEach(profile => {
-            newProfilesArray.push(getChangedUserProfile(profile))
+            promisesArray.push(getChangedUserProfile(profile))
         });
 
+        //Promise.all jako parametr przyjmuje tablicę z promisami
         //kiedy repozytoria dla wszystkich użytkownikó będę uaktualnine, zapisuję je do localforage i uaktualniam na stronie
-        Promise.all(newProfilesArray).then(users => {
+        Promise.all(promisesArray).then(users => {
             console.log(users);
             addUser(users);
         }).then(() => {
