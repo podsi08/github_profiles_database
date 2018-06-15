@@ -1,15 +1,21 @@
 export const searchUserAction = (name) => {
-    console.log('searchUserAction')
+    console.log('searchUserAction', name)
     return {
         type: 'SEARCH_USERS',
         name
     }
 };
 
-export const addUser = (profile) => {
+export const loadUserAction = () => {
+    return {
+        type: 'LOAD_USERS'
+    }
+};
+
+export const addUser = (id) => {
     return {
         type: 'ADD_USER',
-        profile
+        id
     }
 };
 

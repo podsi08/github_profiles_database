@@ -1,11 +1,12 @@
-// import React from 'react';
-// import PubSub from 'pubsub-js';
-// import Profile from './Profile';
-// import UserSearch from './UserSearch';
-// import { getUsers, addUser } from "../services/storage";
-// import { getUsersRepos } from "../services/api";
-//
-// class ProfileList extends React.Component {
+import React from 'react';
+import Profile from './Profile';
+import UserSearch from './UserSearch';
+import { getUsers, addUser } from "../services/storage";
+import { getUsersRepos } from "../services/api";
+import {connect} from "react-redux";
+import {loadUserAction, searchUserAction} from "../actions";
+
+class ProfileList extends React.Component {
 //     constructor(props){
 //         super(props);
 //
@@ -96,23 +97,39 @@
 //     }
 //
 //
-//     render(){
-//         let profilesToRender = [];
-//
-//         //z tablicy z profilami załadowanej do state z local storage tworzę listę dodanych do bazy użytkowników
-//         this.state.profiles.map(profile => {
-//             profilesToRender.push(<Profile key={profile.login} profile={profile} refreshUserRepo={this.refreshUserRepo}/>)
-//         });
-//
-//         return(
-//             <div className='container'>
-//                 <UserSearch profiles={this.state.profiles}/>
-//                 {profilesToRender}
-//                 <button onClick={this.refreshAll}>REFRESH ALL</button>
-//             </div>
-//
-//         )
-//     }
-// }
-//
-// export default ProfileList;
+    componentDidMount(){
+        this.props.loadUsers();
+    }
+
+    render(){
+        let profilesToRender = [];
+
+        //z tablicy z profilami ze store tworzę listę dodanych do bazy użytkowników
+        this.props.profiles.map(profile => {
+            profilesToRender.push(<Profile key={profile.login} profile={profile} refreshUserRepo={this.refreshUserRepo}/>)
+        });
+
+        return(
+            <div className='container'>
+                <UserSearch/>
+                {profilesToRender}
+                {/*<button onClick={this.refreshAll}>REFRESH ALL</button>*/}
+            </div>
+
+        )
+    }
+}
+
+const mapStateToProps = (state) => {
+    return { profiles: state.profiles}
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        loadUsers: () => dispatch(loadUserAction())
+    }
+};
+
+ProfileList = connect(mapStateToProps, mapDispatchToProps)(ProfileList);
+
+export default ProfileList;

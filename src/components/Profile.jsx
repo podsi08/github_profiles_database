@@ -1,8 +1,8 @@
-// import React from 'react';
-// import User from "./User";
-// import Repository from "./Repository";
+import React from 'react';
+import User from "./User";
+import Repository from "./Repository";
 //
-// class Profile extends React.Component {
+class Profile extends React.Component {
 //     constructor(props){
 //         super(props);
 //
@@ -39,15 +39,15 @@
 //             return <div/>
 //         }
 //     };
-//
-//     render(){
-//         return(
-//             <div className='profile'>
-//                 <User login={this.props.profile.login} date={this.props.profile.date} showRepo={this.showRepos}/>
-//                 {this.renderRepos()}
-//             </div>
-//         )
-//     }
-// }
-//
-// export default Profile;
+
+    render(){
+        return(
+            <div className='profile'>
+                <User login={this.props.profile.login} date={this.props.profile.date}/>
+                {/*{this.renderRepos()}*/}
+            </div>
+        )
+    }
+}
+
+export default Profile;
