@@ -1,13 +1,24 @@
 import { searchUser } from "../services/api";
 import {SEARCH_USERS, SEARCH_USERS_SUCCESS} from "../actions";
 
-const searchedUsers = (state = [], action) => {
+const INITIAL_STATE = {
+    users: [],
+    loading: false
+};
+
+const searchedUsers = (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case SEARCH_USERS:
-            return [...state];
+            return {
+                users: [],
+                loading: true
+            };
 
         case SEARCH_USERS_SUCCESS:
-            return action.users;
+            return {
+                users: action.users,
+                loading: false
+            };
 
         default:
             return state;

@@ -73,9 +73,12 @@ class UserSearch extends React.Component {
                 <input ref={node => input = node} type='text' placeholder='user name'/>
                 <button onClick={() => this.props.search(input.value)}>FIND</button>
                 {
-                    this.props.searchedUsers.map((user) => {
+                    this.props.searchedUsers.users.map((user) => {
                         return <div className='searched_user' key={user.id} onClick={() => this.addUserToDatabase(user.id)}>{user.login}</div>
                     })
+                }
+                {
+                    this.props.searchedUsers.loading && <div>Ładowanie...</div>
                 }
             </div>
         )
@@ -83,13 +86,16 @@ class UserSearch extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+    console.log(state);
     return { searchedUsers: state.searchedUsers}
 };
 
 const mapDispatchToProps = (dispatch) => {
+    //po kliknięciu w przysisk wyszukiwania wykonywana jest funkcja this.props.search, która najpierw wysyła akcję searchUserAction,
+    //wyszukuje użytkowników (searchUser(name)) i kiedy otrzymam odpowiedź, to wysyłana jest akcja searchUserSuccessAction(users)
     return {
         search: (name) => {
-            dispatch(searchUserAction(name));
+            dispatch(searchUserAction());
             return searchUser(name).then(users => {
                 dispatch(searchUserSuccessAction(users))
             })

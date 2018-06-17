@@ -7,11 +7,10 @@ export const REFRESH_USER = 'REFRESH_USER';
 export const REFRESH_ALL = 'REFRESH_ALL';
 
 
-export const searchUserAction = (name) => {
-    console.log('searchUserAction', name)
+export const searchUserAction = () => {
+    console.log('searchUserAction');
     return {
-        type: SEARCH_USERS,
-        name
+        type: SEARCH_USERS
     }
 };
 
