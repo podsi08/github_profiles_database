@@ -1,34 +1,57 @@
+export const SEARCH_USERS = 'SEARCH_USERS';
+export const SEARCH_USERS_SUCCESS = 'SEARCH_USERS_SUCCESS';
+export const LOAD_USERS = 'LOAD_USERS';
+export const LOAD_USERS_SUCCESS = 'LOAD_USERS_SUCCESS';
+export const ADD_USER = 'ADD_USER';
+export const REFRESH_USER = 'REFRESH_USER';
+export const REFRESH_ALL = 'REFRESH_ALL';
+
+
 export const searchUserAction = (name) => {
     console.log('searchUserAction', name)
     return {
-        type: 'SEARCH_USERS',
+        type: SEARCH_USERS,
         name
+    }
+};
+
+export const searchUserSuccessAction = (users) => {
+    return {
+        type: SEARCH_USERS_SUCCESS,
+        users
     }
 };
 
 export const loadUserAction = () => {
     return {
-        type: 'LOAD_USERS'
+        type: LOAD_USERS
+    }
+};
+
+export const loadUsersSuccessAction = (users) => {
+    return {
+        type: LOAD_USERS_SUCCESS,
+        users
     }
 };
 
 export const addUser = (id) => {
     return {
-        type: 'ADD_USER',
+        type: ADD_USER,
         id
     }
 };
 
 export const refreshUserRepo = (user) => {
     return {
-        type: 'REFRESH_USER',
+        type: REFRESH_USER,
         user
     }
 };
 
 export const refreshAll = () => {
     return {
-        type: 'REFRESH_ALL'
+        type: REFRESH_ALL
     }
 };
 

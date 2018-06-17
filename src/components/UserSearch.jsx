@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { searchUserAction } from "../actions";
+import {loadUserAction, loadUsersSuccessAction, searchUserAction, searchUserSuccessAction} from "../actions";
 import { searchUser, getUser, getUsersRepos } from '../services/api';
-import { addUser } from '../services/storage';
+import {addUser, getUsers} from '../services/storage';
 
 class UserSearch extends React.Component {
     // constructor(props){
@@ -73,9 +73,9 @@ class UserSearch extends React.Component {
                 <input ref={node => input = node} type='text' placeholder='user name'/>
                 <button onClick={() => this.props.search(input.value)}>FIND</button>
                 {
-                    // this.props.searchedUsers.map((user) => {
-                    //     return <div className='searched_user' key={user.id} onClick={() => this.addUserToDatabase(user.id)}>{user.login}</div>
-                    // })
+                    this.props.searchedUsers.map((user) => {
+                        return <div className='searched_user' key={user.id} onClick={() => this.addUserToDatabase(user.id)}>{user.login}</div>
+                    })
                 }
             </div>
         )
@@ -88,9 +88,15 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        search: (name) => dispatch(searchUserAction(name))
+        search: (name) => {
+            dispatch(searchUserAction(name));
+            return searchUser(name).then(users => {
+                dispatch(searchUserSuccessAction(users))
+            })
+        }
     }
 };
+
 
 UserSearch = connect(mapStateToProps, mapDispatchToProps)(UserSearch);
 

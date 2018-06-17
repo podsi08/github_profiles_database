@@ -1,15 +1,17 @@
 import { getUsers, addUser } from "../services/storage";
 import { getUser, getUsersRepos } from "../services/api";
+import {ADD_USER, LOAD_USERS, LOAD_USERS_SUCCESS} from "../actions";
 
 const profiles = (state = [], action) => {
     switch(action.type){
-        case 'LOAD_USERS':
+        case LOAD_USERS:
             console.log('LOAD USERS');
-            return getUsers().then(users => {
-                return users;
-            });
+            return [...state];
 
-        case 'ADD_USER':
+        case LOAD_USERS_SUCCESS:
+            return [...state, action.users];
+
+        case ADD_USER:
             let profile = {};
 
             return getUser(action.id).then((user) => {
@@ -35,7 +37,9 @@ const profiles = (state = [], action) => {
                     return newState;
                 }
 
-            })
+            });
+        default:
+            return state;
 
     }
 };
