@@ -1,28 +1,12 @@
 import React from 'react';
 import Profile from './Profile';
 import UserSearch from './UserSearch';
-import { getUsers, addUser } from "../services/storage";
-import { getUsersRepos } from "../services/api";
+import { getUsers } from "../services/storage";
 import {connect} from "react-redux";
-import {loadUserAction, loadUsersSuccessAction, searchUserAction} from "../actions";
+import { loadUserAction, loadUsersSuccessAction } from "../actions";
 
 class ProfileList extends React.Component {
-//     constructor(props){
-//         super(props);
-//
-//         this.state = {
-//             profiles: []
-//         }
-//     }
-//
-//     loadUsers = () => {
-//         console.log("loadUsers()");
-//         getUsers().then(users => {
-//             this.setState({
-//                 profiles: users
-//             })
-//         })
-//     };
+
 //
 //     //funkcja wykona się po kliknięciu w przycisk REFRESH, jako parametr przekazuję obiekt z danymi o użytkowniku
 //     refreshUserRepo = (user) => {
@@ -80,30 +64,14 @@ class ProfileList extends React.Component {
 //         });
 //     };
 //
-//     componentDidMount() {
-//         //po otrzymaniu odpowiedzi z local storage zmieniam state
-//         this.loadUsers();
-//
-//         //nasłuchuje zdarzeń z wiadomością 'NEW USER'
-//         //w komponencie UserSearch po kliknięciu w użytkownika wykona się funkcja addUser, która dodaje użytkownika do bazy
-//         //po czym 'publikuje' zdarzenie - publish('NEW USER')
-//         //w momencie otrzymania wiadomości o zdarzeniu, wykona się funkcja podana w subscribe jako drugi parametr
-//         this.token = PubSub.subscribe('NEW USER', this.loadUsers);
-//         console.log('subscribe');
-//     }
-//
-//     componentWillUnmount() {
-//         PubSub.unsubscribe(this.token);
-//     }
-//
-//
+
     componentDidMount(){
         this.props.loadUsers();
     }
 
     render(){
         let profilesToRender = [];
-
+        console.log(this.props.profiles);
         //z tablicy z profilami ze store tworzę listę dodanych do bazy użytkowników
         this.props.profiles.profiles.map(profile => {
             profilesToRender.push(<Profile key={profile.login} profile={profile} refreshUserRepo={this.refreshUserRepo}/>)
@@ -130,11 +98,14 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(loadUserAction());
             return getUsers()
                 .then(users => {
-                    dispatch(loadUsersSuccessAction(users));
+                    users !== null && dispatch(loadUsersSuccessAction(users));
                 });
         }
+
+
     }
 };
+
 
 ProfileList = connect(mapStateToProps, mapDispatchToProps)(ProfileList);
 

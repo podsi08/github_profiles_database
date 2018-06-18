@@ -33,10 +33,10 @@ export const loadUsersSuccessAction = (profiles) => {
     }
 };
 
-export const addUser = (id) => {
+export const addUserAction = (profile) => {
     return {
         type: ADD_USER,
-        id
+        profile
     }
 };
 

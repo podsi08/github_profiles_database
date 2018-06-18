@@ -1,4 +1,3 @@
-import { searchUser } from "../services/api";
 import {SEARCH_USERS, SEARCH_USERS_SUCCESS} from "../actions";
 
 const INITIAL_STATE = {
