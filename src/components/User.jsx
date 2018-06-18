@@ -3,11 +3,6 @@ import { connect } from 'react-redux';
 import { showUserRepoAction } from "../actions";
 
 class User extends React.Component {
-    // showRepoClick = () => {
-    //     if(typeof this.props.showRepo === 'function'){
-    //         this.props.showRepo();
-    //     }
-    // };
 
     render() {
         return (

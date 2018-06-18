@@ -71,6 +71,7 @@ class ProfileList extends React.Component {
 
     render(){
         let profilesToRender = [];
+        console.log("renderuje liste");
 
         //z tablicy z profilami ze store tworzę listę dodanych do bazy użytkowników
         this.props.profiles.profiles.map(profile => {

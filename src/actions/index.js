@@ -46,9 +46,9 @@ export const showUserRepoAction = (user) => {
         type: SHOW_USER_REPOS,
         user
     }
-}
+};
 
-export const refreshUserRepo = (user) => {
+export const refreshUserRepoAction = (user) => {
     return {
         type: REFRESH_USER,
         user
