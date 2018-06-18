@@ -67,7 +67,7 @@ class UserSearch extends React.Component {
 
     render(){
         let input;
-        console.log(this.props.searchedUsers);
+
         return(
             <div className='user_search'>
                 <input ref={node => input = node} type='text' placeholder='user name'/>
@@ -86,7 +86,6 @@ class UserSearch extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log(state);
     return { searchedUsers: state.searchedUsers}
 };
 

@@ -2,14 +2,24 @@ import { getUsers, addUser } from "../services/storage";
 import { getUser, getUsersRepos } from "../services/api";
 import {ADD_USER, LOAD_USERS, LOAD_USERS_SUCCESS} from "../actions";
 
-const profiles = (state = [], action) => {
+const INITIAL_STATE = {
+    profiles: [],
+    loading: false
+};
+
+const profiles = (state = INITIAL_STATE, action) => {
     switch(action.type){
         case LOAD_USERS:
-            console.log('LOAD USERS');
-            return [...state];
+            return {
+                profiles: [],
+                loading: true
+            };
 
         case LOAD_USERS_SUCCESS:
-            return [...state, action.users];
+            return {
+                profiles: action.profiles,
+                loading: false
+            };
 
         case ADD_USER:
             let profile = {};

@@ -102,14 +102,12 @@ class ProfileList extends React.Component {
     }
 
     render(){
-        console.log("cokolwiek")
-        console.log(this.props);
         let profilesToRender = [];
-        console.log(this.props.profiles);
+
         //z tablicy z profilami ze store tworzę listę dodanych do bazy użytkowników
-        // this.props.profiles.map(profile => {
-        //     profilesToRender.push(<Profile key={profile.login} profile={profile} refreshUserRepo={this.refreshUserRepo}/>)
-        // });
+        this.props.profiles.profiles.map(profile => {
+            profilesToRender.push(<Profile key={profile.login} profile={profile} refreshUserRepo={this.refreshUserRepo}/>)
+        });
 
         return(
             <div className='container'>
@@ -123,8 +121,6 @@ class ProfileList extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log("mapStateToProps");
-    console.log(state);
     return { profiles: state.profiles}
 };
 

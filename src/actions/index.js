@@ -8,7 +8,6 @@ export const REFRESH_ALL = 'REFRESH_ALL';
 
 
 export const searchUserAction = () => {
-    console.log('searchUserAction');
     return {
         type: SEARCH_USERS
     }
@@ -27,10 +26,10 @@ export const loadUserAction = () => {
     }
 };
 
-export const loadUsersSuccessAction = (users) => {
+export const loadUsersSuccessAction = (profiles) => {
     return {
         type: LOAD_USERS_SUCCESS,
-        users
+        profiles
     }
 };
 
