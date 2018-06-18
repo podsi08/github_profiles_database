@@ -1,4 +1,4 @@
-import {ADD_USER, LOAD_USERS, LOAD_USERS_SUCCESS, REFRESH_USER, SHOW_USER_REPOS} from "../actions";
+import {ADD_USER, LOAD_USERS, LOAD_USERS_SUCCESS, REFRESH_ALL, REFRESH_USER, SHOW_USER_REPOS} from "../actions";
 
 const INITIAL_STATE = {
     profiles: [],
@@ -27,10 +27,15 @@ const profiles = (state = INITIAL_STATE, action) => {
         case SHOW_USER_REPOS:
             //w tablicy z użytkownikami przechowywanej w store wyszukuję użytkownika, dla którego mają zostać pokazane repozytoria,
             //tworzę nową tablicę w której zmieniam dla użytkownika showRepos z false na true (lub na odwrót) i zwracam nowy stan
-            let userIndex = state.profiles.map(profile => profile.login).indexOf(action.user);
+            let userIndex = state.profiles.findIndex(profile => profile.login === action.user);
+
             let newProfilesArray = [...state.profiles];
 
-            newProfilesArray[userIndex].showRepos = !newProfilesArray[userIndex].showRepos;
+            //tworzę nowego użytkownika
+            let changedUser = {...newProfilesArray[userIndex]};
+            changedUser.showRepos = !changedUser.showRepos;
+
+            newProfilesArray[userIndex] = changedUser;
 
             return {
                 profiles: newProfilesArray
@@ -38,7 +43,9 @@ const profiles = (state = INITIAL_STATE, action) => {
 
         case REFRESH_USER:
             console.log('REFRESH USER');
-            let refreshUserIndex = state.profiles.map(profile => profile.login).indexOf(action.user.login);
+            // let refreshUserIndex = state.profiles.map(profile => profile.login).indexOf(action.user.login);
+            let refreshUserIndex = state.profiles.findIndex(profile => profile.login === action.user.login);
+
             let newState = [...state.profiles];
 
             newState[refreshUserIndex] = action.user;
@@ -46,6 +53,13 @@ const profiles = (state = INITIAL_STATE, action) => {
             return {
                 profiles: newState
             };
+
+        case REFRESH_ALL:
+            console.log('REFRESH ALL');
+
+            return {
+                profiles: action.profiles
+            }
 
         default:
             return state;

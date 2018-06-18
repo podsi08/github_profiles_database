@@ -55,9 +55,10 @@ export const refreshUserRepoAction = (user) => {
     }
 };
 
-export const refreshAll = () => {
+export const refreshAllAction = (profiles) => {
     return {
-        type: REFRESH_ALL
+        type: REFRESH_ALL,
+        profiles
     }
 };
 
