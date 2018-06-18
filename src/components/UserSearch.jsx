@@ -15,6 +15,7 @@ class UserSearch extends React.Component {
         return  getUser(id).then(user => {
             profile.login = user.login;
             profile.date = user.created_at;
+            profile.showRepos = false;
 
             return getUsersRepos(user.login);
         }).then(repos => {
@@ -39,7 +40,7 @@ class UserSearch extends React.Component {
 
     render(){
         let input;
-        console.log(this.props);
+
         return(
             <div className='user_search'>
                 <input ref={node => input = node} type='text' placeholder='user name'/>
@@ -49,9 +50,7 @@ class UserSearch extends React.Component {
                         return <div className='searched_user' key={user.id} onClick={() => this.addUserToDatabase(user.id)}>{user.login}</div>
                     })
                 }
-                {
-                    this.props.searchedUsers.loading && <div>Ładowanie...</div>
-                }
+                { this.props.searchedUsers.loading && <div>Ładowanie...</div> }
             </div>
         )
     }

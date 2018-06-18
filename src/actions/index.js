@@ -3,6 +3,7 @@ export const SEARCH_USERS_SUCCESS = 'SEARCH_USERS_SUCCESS';
 export const LOAD_USERS = 'LOAD_USERS';
 export const LOAD_USERS_SUCCESS = 'LOAD_USERS_SUCCESS';
 export const ADD_USER = 'ADD_USER';
+export const SHOW_USER_REPOS = 'SHOW_USER_REPO';
 export const REFRESH_USER = 'REFRESH_USER';
 export const REFRESH_ALL = 'REFRESH_ALL';
 
@@ -39,6 +40,13 @@ export const addUserAction = (profile) => {
         profile
     }
 };
+
+export const showUserRepoAction = (user) => {
+    return {
+        type: SHOW_USER_REPOS,
+        user
+    }
+}
 
 export const refreshUserRepo = (user) => {
     return {

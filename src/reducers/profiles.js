@@ -1,4 +1,4 @@
-import {ADD_USER, LOAD_USERS, LOAD_USERS_SUCCESS} from "../actions";
+import {ADD_USER, LOAD_USERS, LOAD_USERS_SUCCESS, SHOW_USER_REPOS} from "../actions";
 
 const INITIAL_STATE = {
     profiles: [],
@@ -22,6 +22,19 @@ const profiles = (state = INITIAL_STATE, action) => {
         case ADD_USER:
             return {
                 profiles: [action.profile, ...state.profiles]
+            };
+
+        case SHOW_USER_REPOS:
+            //w tablicy z użytkownikami przechowywanej w store wyszukuję użytkownika, dla którego mają zostać pokazane repozytoria,
+            //tworzę nową tablicę w której zmieniam dla użytkownika showRepos z false na true (lub na odwrót) i zwracam nowy stan
+            let userIndex = state.profiles.map(profile => profile.login).indexOf(action.user);
+            let newProfilesArray = [...state.profiles];
+
+            newProfilesArray[userIndex].showRepos = !newProfilesArray[userIndex].showRepos;
+
+            console.log(newProfilesArray);
+            return {
+                profiles: newProfilesArray
             };
 
         default:
