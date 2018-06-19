@@ -68,7 +68,7 @@ class UserSearch extends React.Component {
                 <input type='text' placeholder='user name' onChange={this.handleInput}/>
                 <button onClick={this.formSubmit}>FIND</button>
                 {
-                    this.state.users.map((user) => {
+                    this.state.users !== undefined && this.state.users.map((user) => {
                         return <div className='searched_user' key={user.id} onClick={() => this.addUserToDatabase(user.id)}>{user.login}</div>
                     })
                 }
