@@ -8,23 +8,7 @@ import { getUsersRepos } from "../services/api";
 @inject ('profilesStore')
 @observer
 class ProfileList extends React.Component {
-//     constructor(props){
-//         super(props);
-//
-//         this.state = {
-//             profiles: []
-//         }
-//     }
-//
-//     loadUsers = () => {
-//         console.log("loadUsers()");
-//         getUsers().then(users => {
-//             this.setState({
-//                 profiles: users
-//             })
-//         })
-//     };
-//
+
 //     //funkcja wykona się po kliknięciu w przycisk REFRESH, jako parametr przekazuję obiekt z danymi o użytkowniku
 //     refreshUserRepo = (user) => {
 //         //tworzę nową tablicę w której podmienię użytkownika dla którego mają zostać odświeżone repozytoria
@@ -81,23 +65,7 @@ class ProfileList extends React.Component {
 //         });
 //     };
 //
-//     componentDidMount() {
-//         //po otrzymaniu odpowiedzi z local storage zmieniam state
-//         this.loadUsers();
-//
-//         //nasłuchuje zdarzeń z wiadomością 'NEW USER'
-//         //w komponencie UserSearch po kliknięciu w użytkownika wykona się funkcja addUser, która dodaje użytkownika do bazy
-//         //po czym 'publikuje' zdarzenie - publish('NEW USER')
-//         //w momencie otrzymania wiadomości o zdarzeniu, wykona się funkcja podana w subscribe jako drugi parametr
-//         this.token = PubSub.subscribe('NEW USER', this.loadUsers);
-//         console.log('subscribe');
-//     }
-//
-//     componentWillUnmount() {
-//         PubSub.unsubscribe(this.token);
-//     }
-//
-//
+
 
     componentDidMount() {
         getUsers().then(users => {
@@ -121,7 +89,7 @@ class ProfileList extends React.Component {
             <div className='container'>
                 <UserSearch/>
                 {profilesToRender}
-                <button onClick={this.refreshAll}>REFRESH ALL</button>
+                {/*<button onClick={this.refreshAll}>REFRESH ALL</button>*/}
             </div>
 
         )

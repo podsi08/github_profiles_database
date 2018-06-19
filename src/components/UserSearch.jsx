@@ -2,43 +2,39 @@ import React from 'react';
 import { observer, inject } from 'mobx-react';
 import { searchUser, getUser, getUsersRepos } from '../services/api';
 import { addUser } from '../services/storage';
+import { toJS } from 'mobx';
 
 @inject('searchedUsersStore')
+@inject('profilesStore')
 @observer
 class UserSearch extends React.Component {
-    // addUserToDatabase = (id) => {
-    //     let profile = {};
-    //
-    //     //pobieram dane o użytkowniku, kiedy je otrzymam, pobieram dane o repozytoriach,
-    //     //zapisuję dane do obiektu profile, który na koniec dodam do local storage
-    //     return getUser(id).then((user) => {
-    //         profile.login = user.login;
-    //         profile.date = user.created_at;
-    //
-    //         return getUsersRepos(user.login);
-    //     }).then(repos => {
-    //         profile.repos = repos.map(repo => {
-    //             return {
-    //                 name: repo.name,
-    //                 stars: repo.stargazers_count
-    //             }
-    //         });
-    //
-    //         return profile;
-    //     }).then(profile => {
-    //         //do tablicy z profilami przechowywanej w state dodaje użytkownika na którego kliknięto (jeżeli nie został już wcześniej dodany do bazy)
-    //         let databaseUsernames = this.props.profiles.map(profile => profile.login);
-    //
-    //         if(databaseUsernames.indexOf(profile.login) === -1) {
-    //             let profilesToSave = [profile, ...this.props.profiles];
-    //             console.log("wywolanie addUser()");
-    //             addUser(profilesToSave).then(() => {
-    //                 PubSub.publish('NEW USER');
-    //                 console.log("publish(NEW USER)");
-    //             });
-    //         }
-    //     })
-    // };
+    addUserToDatabase = (id) => {
+        let profile = {};
+        return getUser(id).then(user => {
+            profile.login = user.login;
+            profile.date = user.created_at;
+            profile.showRepos = false;
+
+            return getUsersRepos(user.login);
+        }).then(repos => {
+            profile.repos = repos.map(repo => {
+                return {
+                    name: repo.name,
+                    stars: repo.stargazers_count
+                }
+            });
+            return profile;
+        }).then(profile => {
+            let databaseUsernames = toJS(this.props.profilesStore.profiles).map(profile => profile.login);
+
+            if (databaseUsernames.indexOf(profile.login) === -1) {
+                let profilesToSave = [...toJS(this.props.profilesStore.profiles), profile];
+                addUser(profilesToSave);
+
+                this.props.profilesStore.addUserAction(profile);
+            }
+        })
+    };
 
     handleInput = (event) => {
         this.props.searchedUsersStore.searchUser(event.target.value)

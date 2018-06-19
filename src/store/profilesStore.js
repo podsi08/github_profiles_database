@@ -7,7 +7,7 @@ class ProfilesStore {
         this.profiles = users;
     };
 
-    @action addUser = (user) => {
+    @action addUserAction = (user) => {
         this.profiles.push(user);
     };
 }
