@@ -1,11 +1,13 @@
-// import React from 'react';
-// import PubSub from 'pubsub-js';
-// import Profile from './Profile';
-// import UserSearch from './UserSearch';
-// import { getUsers, addUser } from "../services/storage";
-// import { getUsersRepos } from "../services/api";
-//
-// class ProfileList extends React.Component {
+import React from 'react';
+import { observer, inject } from 'mobx-react';
+import Profile from './Profile';
+import UserSearch from './UserSearch';
+import { getUsers, addUser } from "../services/storage";
+import { getUsersRepos } from "../services/api";
+
+@inject ('profilesStore')
+@observer
+class ProfileList extends React.Component {
 //     constructor(props){
 //         super(props);
 //
@@ -96,23 +98,34 @@
 //     }
 //
 //
-//     render(){
-//         let profilesToRender = [];
-//
-//         //z tablicy z profilami załadowanej do state z local storage tworzę listę dodanych do bazy użytkowników
-//         this.state.profiles.map(profile => {
-//             profilesToRender.push(<Profile key={profile.login} profile={profile} refreshUserRepo={this.refreshUserRepo}/>)
-//         });
-//
-//         return(
-//             <div className='container'>
-//                 <UserSearch profiles={this.state.profiles}/>
-//                 {profilesToRender}
-//                 <button onClick={this.refreshAll}>REFRESH ALL</button>
-//             </div>
-//
-//         )
-//     }
-// }
-//
-// export default ProfileList;
+
+    componentDidMount() {
+        getUsers().then(users => {
+            console.log(users);
+            this.props.profilesStore.loadUsers(users)
+        })
+    }
+
+    render(){
+        let profilesToRender = [];
+
+        console.log('renderowanie ProfileList');
+        console.log(this.props.profilesStore.profiles);
+
+        //z tablicy z profilami załadowanej do state z local storage tworzę listę dodanych do bazy użytkowników
+        this.props.profilesStore.profiles.map(profile => {
+            profilesToRender.push(<Profile key={profile.login} profile={profile} refreshUserRepo={this.refreshUserRepo}/>)
+        });
+
+        return(
+            <div className='container'>
+                <UserSearch/>
+                {profilesToRender}
+                <button onClick={this.refreshAll}>REFRESH ALL</button>
+            </div>
+
+        )
+    }
+}
+
+export default ProfileList;

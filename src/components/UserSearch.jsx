@@ -3,26 +3,9 @@ import { observer, inject } from 'mobx-react';
 import { searchUser, getUser, getUsersRepos } from '../services/api';
 import { addUser } from '../services/storage';
 
-@inject ('store')
+@inject('searchedUsersStore')
 @observer
 class UserSearch extends React.Component {
-
-
-    // handleInput = (e) => {
-    //     this.setState({
-    //         query: e.target.value
-    //     })
-    // };
-    //
-    // formSubmit = () => {
-    //     //czekam na odpowiedź funkcji searchUser i dopiero potem mogę zmienić state
-    //     searchUser(this.state.query).then((profiles) => {
-    //         this.setState({
-    //             users: profiles
-    //         });
-    //     });
-    // };
-    //
     // addUserToDatabase = (id) => {
     //     let profile = {};
     //
@@ -58,23 +41,22 @@ class UserSearch extends React.Component {
     // };
 
     handleInput = (event) => {
-        this.props.store.searchUser(event.target.value)
+        this.props.searchedUsersStore.searchUser(event.target.value)
     };
 
     newSearching = () => {
-        searchUser(this.props.store.query).then(users => {
-            this.props.store.changeSearchedUsers(users)
+        searchUser(this.props.searchedUsersStore.query).then(users => {
+            this.props.searchedUsersStore.changeSearchedUsers(users)
         })
     };
 
     render(){
-        console.log(this.props.store.searchedUsers);
         return(
             <div className='user_search'>
                 <input type='text' placeholder='user name' onChange={this.handleInput}/>
                 <button onClick={this.newSearching}>FIND</button>
                 {
-                    this.props.store.searchedUsers !== undefined && this.props.store.searchedUsers.map((user) => {
+                    this.props.searchedUsersStore.searchedUsers !== undefined && this.props.searchedUsersStore.searchedUsers.map((user) => {
                         return <div className='searched_user' key={user.id} onClick={() => this.addUserToDatabase(user.id)}>{user.login}</div>
                     })
                 }
