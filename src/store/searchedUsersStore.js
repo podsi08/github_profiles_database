@@ -1,15 +1,18 @@
 import { observable, action } from 'mobx';
+import { searchUser} from "../services/api";
 
 class SearchedUsersStore {
     @observable query = '';
     @observable searchedUsers = [];
 
-    @action searchUser = (name) => {
+    @action changeQuery = (name) => {
         this.query = name;
     };
 
-    @action changeSearchedUsers = (users) => {
-        this.searchedUsers = users;
+    @action searchForUsers = () => {
+        searchUser(this.query).then(users => {
+            this.searchedUsers = users;
+        });
     };
 }
 

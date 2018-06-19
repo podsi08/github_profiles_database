@@ -68,10 +68,7 @@ class ProfileList extends React.Component {
 
 
     componentDidMount() {
-        getUsers().then(users => {
-            console.log(users);
-            this.props.profilesStore.loadUsers(users)
-        })
+        this.props.profilesStore.loadUsers()
     }
 
     render(){
