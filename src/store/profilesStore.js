@@ -43,6 +43,20 @@ class ProfilesStore {
                 this.profiles.push(profile);
             }
         })
+    };
+
+    @action showUserRepos = (login) => {
+        let newState = [...toJS(this.profiles)];
+
+        let userIndex = newState.findIndex(profile => profile.login === login);
+
+        let changedUser = {...newState[userIndex]};
+
+        changedUser.showRepos = !changedUser.showRepos;
+
+        newState[userIndex] = changedUser;
+
+        this.profiles = newState;
     }
 }
 
