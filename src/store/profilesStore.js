@@ -73,15 +73,16 @@ class ProfilesStore {
             profile.repos = repos.map(repo => {
                 return{
                     name: repo.name,
-                    stars: repo.stargazers.count
+                    stars: repo.stargazers_count
                 }
             });
             newState[userIndex] = profile;
 
-            //zapisuję tablicę z odświeżonymi repozytoriami użytkownika do localforage
-            addUser(newState);
-
             this.profiles = newState;
+
+            //zapisuję tablicę z odświeżonymi repozytoriami użytkownika do localforage (ustawiam showRepos dla zmienionego użytkownika na false)
+            newState[userIndex].showRepos = false;
+            addUser(newState);
         })
     };
 
@@ -105,9 +106,15 @@ class ProfilesStore {
         });
 
         Promise.all(promisesArray).then(users => {
-            addUser(users);
-
             this.profiles = users;
+
+            //zapisuję odświeżoną tablicę do localforage, ustawiam showRepos dla użytkowników na false żeby po odświeżeniu
+            //strony, repozytoria użytkowników były niewidoczne
+            users.forEach(user => {
+                user.showRepos = false;
+            });
+
+            addUser(users);
         })
     }
 }
