@@ -1,5 +1,5 @@
 import { observable, action } from 'mobx';
-import { searchUser} from "../services/api";
+import { searchUser } from "../services/api";
 
 class SearchedUsersStore {
     @observable query = '';

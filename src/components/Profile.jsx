@@ -3,29 +3,9 @@ import { observer, inject } from 'mobx-react';
 import User from "./User";
 import Repository from "./Repository";
 
-// @inject('profilesStore')
-// @observer
+@inject('profilesStore')
+@observer
 class Profile extends React.Component {
-    // constructor(props){
-    //     super(props);
-    //
-    //     this.state = {
-    //         showRepo: false
-    //     }
-    // }
-    //
-    // showRepos = () => {
-    //     this.setState({
-    //         showRepo: !this.state.showRepo
-    //     })
-    // };
-    //
-    // refreshUserRepoClick = () => {
-    //     if(typeof this.props.refreshUserRepo === 'function'){
-    //         this.props.refreshUserRepo(this.props.profile);
-    //     }
-    // };
-
     renderRepos = () => {
         if (this.props.profile.showRepos) {
             return (
@@ -35,7 +15,7 @@ class Profile extends React.Component {
                             return <Repository key={repo.name} repoName={repo.name} stars={repo.stars}/>
                         })
                     }
-                    {/*<button onClick={this.refreshUserRepoClick}>REFRESH</button>*/}
+                    <button onClick={() => this.props.profilesStore.refreshUserRepos(this.props.profile)}>REFRESH</button>
                 </div>
             )
         } else {

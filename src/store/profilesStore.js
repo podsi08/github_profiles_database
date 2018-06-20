@@ -57,6 +57,58 @@ class ProfilesStore {
         newState[userIndex] = changedUser;
 
         this.profiles = newState;
+    };
+
+    @action refreshUserRepos = (user) => {
+        let profile = {...user};
+
+        let newState = [...toJS(this.profiles)];
+
+        let userIndex = newState.findIndex(profile => profile.login === user.login);
+
+        console.log(user.login, userIndex);
+
+        getUsersRepos(user.login).then(repos => {
+            console.log(repos);
+            profile.repos = repos.map(repo => {
+                return{
+                    name: repo.name,
+                    stars: repo.stargazers.count
+                }
+            });
+            newState[userIndex] = profile;
+
+            //zapisuję tablicę z odświeżonymi repozytoriami użytkownika do localforage
+            addUser(newState);
+
+            this.profiles = newState;
+        })
+    };
+
+    @action refreshAll = () => {
+        let promisesArray = [];
+
+        let getChangedUserProfile = (user) => {
+            return getUsersRepos(user.login).then(repos => {
+                user.repos = repos.map(repo => {
+                    return {
+                        name: repo.name,
+                        stars: repo.stargazers_count
+                    }
+                });
+                return user
+            });
+        };
+
+        toJS(this.profiles).forEach(profile => {
+            promisesArray.push(getChangedUserProfile(profile))
+        });
+
+        Promise.all(promisesArray).then(users => {
+            addUser(users);
+
+            this.profiles = users;
+        })
     }
 }
 
