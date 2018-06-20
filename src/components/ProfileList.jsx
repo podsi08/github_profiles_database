@@ -1,7 +1,7 @@
 import React from 'react';
 import Profile from './Profile';
 import UserSearch from './UserSearch';
-import { getUsers } from "../services/storage";
+import {addUser, getUsers} from "../services/storage";
 import { getUsersRepos } from "../services/api"
 import {connect} from "react-redux";
 import { loadUserAction, loadUsersSuccessAction, refreshAllAction } from "../actions";
@@ -32,11 +32,20 @@ class ProfileList extends React.Component {
         //kiedy repozytoria dla wszystkich użytkownikó będę uaktualnine, zapisuję je do localforage i uaktualniam na stronie
         Promise.all(promisesArray).then(users => {
             this.props.refresh(users);
+
+            //zapisuję tablicę z odświeżonymi repozytoriami do localforage (wcześniej zmieniam showRepos na false żeby po
+            //odświeżeniu strony, repozytoria użytkowników były niewidoczne)
+            users.forEach(user => {
+                user.showRepos = false;
+            });
+
+            addUser(users);
         })
     };
 
 
     componentDidMount(){
+        console.log('componentDidMount');
         this.props.loadUsers();
     }
 

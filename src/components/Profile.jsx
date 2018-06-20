@@ -4,6 +4,7 @@ import User from "./User";
 import Repository from "./Repository";
 import {refreshUserRepoAction} from "../actions";
 import {getUsersRepos} from "../services/api";
+import {addUser} from "../services/storage";
 
 class Profile extends React.Component {
     // funkcja wykona się po kliknięciu w przycisk REFRESH, jako parametr przekazuję obiekt z danymi o użytkowniku
@@ -19,6 +20,17 @@ class Profile extends React.Component {
                 }
             });
             this.props.refresh(profile);
+
+            //do localforage zapisuję listę profili z odświeżonymi repozytoriami użytkownika (przed zapisaniem ustawiam
+            //showRepos na false, żeby po odświeżeniu strony, repozytoria użytkownika były niewidoczne)
+            profile.showRepos = false;
+            let profilesToSave = [...this.props.profiles.profiles];
+            let profileIndex = profilesToSave.findIndex(user => user.login === profile.login);
+
+            profilesToSave[profileIndex] = profile;
+
+            addUser(profilesToSave);
+
         })
     };
 
@@ -40,7 +52,6 @@ class Profile extends React.Component {
     };
 
     render(){
-        console.log(this.props.profile.showRepos);
         return(
             <div className='profile'>
                 <User login={this.props.profile.login} date={this.props.profile.date}/>
@@ -50,7 +61,9 @@ class Profile extends React.Component {
     }
 }
 
-
+const mapStateToProps = (state) => {
+    return {profiles: state.profiles}
+};
 
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -60,6 +73,6 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
-Profile = connect(null, mapDispatchToProps)(Profile);
+Profile = connect(mapStateToProps, mapDispatchToProps)(Profile);
 
 export default Profile;

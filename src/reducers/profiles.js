@@ -1,4 +1,5 @@
 import {ADD_USER, LOAD_USERS, LOAD_USERS_SUCCESS, REFRESH_ALL, REFRESH_USER, SHOW_USER_REPOS} from "../actions";
+import { addUser } from "../services/storage";
 
 const INITIAL_STATE = {
     profiles: [],
@@ -59,7 +60,7 @@ const profiles = (state = INITIAL_STATE, action) => {
 
             return {
                 profiles: action.profiles
-            }
+            };
 
         default:
             return state;
