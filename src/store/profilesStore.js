@@ -20,6 +20,7 @@ class ProfilesStore {
             profile.date = user.created_at;
             profile.showRepos = false;
 
+            console.log(typeof profile.date);
             return getUsersRepos(user.login);
         }).then(repos => {
             profile.repos = repos.map(repo => {
@@ -28,6 +29,7 @@ class ProfilesStore {
                     stars: repo.stargazers_count
                 }
             });
+            console.log(typeof profile.repos[0].stars)
             return profile;
         }).then(profile => {
             //sprawdzam, czy użytkownik znajduje się już w bazie, jeżeli nie, dodaję go do tablicy i nadpisuję tablicę do localforage
